@@ -1,0 +1,36 @@
+<div
+class="relative flex flex-col items-center"
+#treeContainer
+>
+  <!-- SVG para líneas -->
+  <svg class="absolute top-0 left-0 w-full h-full pointer-events-none">
+  <path
+    *ngIf="fatherLine"
+    [attr.d]="generateCurvePath(fatherLine.x1, fatherLine.y1, fatherLine.x2, fatherLine.y2)"
+    stroke="sienna"
+    stroke-width="3"
+    fill="transparent"
+    stroke-linecap="round"
+  />
+  <path
+    *ngIf="motherLine"
+    [attr.d]="generateCurvePath(motherLine.x1, motherLine.y1, motherLine.x2, motherLine.y2)"
+    stroke="sienna"
+    stroke-width="3"
+    fill="transparent"
+    stroke-linecap="round"
+  />
+</svg>
+
+
+  <!-- Padres -->
+  <div class="flex items-end space-x-16 mb-8 relative z-10">
+    <app-ascendant-tree *ngIf="data.father" [data]="data.father" (personSelected)="onSelectPerson($event)"></app-ascendant-tree>
+    <app-ascendant-tree *ngIf="data.mother" [data]="data.mother" (personSelected)="onSelectPerson($event)"></app-ascendant-tree>
+  </div>
+
+  <!-- Nodo hijo -->
+  <div class="relative z-10" #nodeElement>
+    <app-node [person]="data.root" [isMainNode]="true" (personClick)="onSelectPerson($event)"></app-node>
+  </div>
+</div>

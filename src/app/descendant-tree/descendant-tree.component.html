@@ -1,0 +1,56 @@
+<div class="relative flex flex-col items-center" #treeContainer>
+  <!-- SVG: líneas -->
+  <svg class="absolute top-0 left-0 w-full h-full pointer-events-none">
+    <!-- Línea vertical desde el centro de la pareja -->
+    <line
+      *ngIf="mainLine"
+      [attr.x1]="mainLine.x"
+      [attr.y1]="mainLine.y1"
+      [attr.x2]="mainLine.x"
+      [attr.y2]="mainLine.y2"
+      stroke="gray"
+      stroke-width="2"
+    />
+
+    <!-- Línea horizontal entre hijos -->
+    <line
+      *ngIf="horizontalLine"
+      [attr.x1]="horizontalLine.x1"
+      [attr.y1]="horizontalLine.y"
+      [attr.x2]="horizontalLine.x2"
+      [attr.y2]="horizontalLine.y"
+      stroke="gray"
+      stroke-width="2"
+    />
+
+    <!-- Líneas verticales de cada hijo a la horizontal -->
+    <line
+      *ngFor="let line of childrenLines"
+      [attr.x1]="line.x"
+      [attr.y1]="line.y1"
+      [attr.x2]="line.x"
+      [attr.y2]="line.y2"
+      stroke="gray"
+      stroke-width="2"
+    />
+  </svg>
+
+  <!-- Pareja (root y spouse) -->
+  <div class="relative z-10 mb-8 flex items-center justify-center space-x-4" #coupleElement>
+    <div #rootNode>
+      <app-node [person]="data.root" (personClick)="onSelectPerson($event)"></app-node>
+    </div>
+    <div *ngIf="data.spouse" #spouseNode>
+      <app-node [person]="data.spouse" (personClick)="onSelectPerson($event)"></app-node>
+    </div>
+  </div>
+
+  <!-- Hijos -->
+  <div class="flex space-x-16 relative z-10">
+    <app-descendant-tree
+      *ngFor="let child of data.children"
+      [data]="child"
+      (personSelected)="onSelectPerson($event)"
+    ></app-descendant-tree>
+  </div>
+</div>

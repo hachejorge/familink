@@ -1,0 +1,46 @@
+<app-header (backToHome)="onBackToHome()"></app-header>
+
+<app-person-detail
+  *ngIf="selectedPersonId"
+  [personId]="selectedPersonId"
+  (close)="closePanel()"
+  (personTree)="loadTree($event)"
+  (personEdit)="editPerson($event)"
+  (manageRelatives)="manageRelatives($event)"
+></app-person-detail>
+
+<!-- Este main ya no ocupa toda la altura, solo lo necesario -->
+<main class="bg-green-50 min-h-[calc(100vh-60px)] p-10 flex items-center justify-center">
+  <div *ngIf="loading">Cargando...</div>
+  <div *ngIf="error">{{ error }}</div>
+
+  <app-person-details-extended 
+    *ngIf="showManageRelatives && personToManage"
+    [rootPerson]="personToManage"
+    (closePage)="backToTree()"
+  ></app-person-details-extended>
+
+  <app-zoom-wrapper *ngIf="(data || data2) && !showManageRelatives" [diagramName]="diagramName">
+    <app-ascendant-tree
+      *ngIf="data"
+      [data]="data"
+      (personSelected)="onPersonSelected($event)"
+    ></app-ascendant-tree>
+
+    <app-descendant-tree
+      *ngIf="data2"
+      [data]="data2"
+      (personSelected)="onPersonSelected($event)"
+    ></app-descendant-tree>
+  </app-zoom-wrapper>
+
+</main>
+
+<app-person-edit
+  *ngIf="showEditModal && personToEdit"
+  [person]="personToEdit"
+  (closeModal)="closeEditModal()"
+></app-person-edit>
+
+
+<router-outlet></router-outlet>

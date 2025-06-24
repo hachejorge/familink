@@ -1,0 +1,68 @@
+<!-- Fondo difuminado del modal -->
+<div class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 flex items-center justify-center">
+  <div class="bg-green-50 rounded-xl shadow-lg w-[90%] max-w-md relative">
+
+    <!-- Cabecera -->
+    <div class="w-full h-32 bg-emerald-300 rounded-t-xl px-6 flex items-end justify-between">
+      <h2 class="text-2xl font-bold pb-4">Iniciar sesión</h2>
+    </div>
+
+    <!-- Formulario -->
+    <form (ngSubmit)="login()" class="p-6 space-y-4">
+      <!-- Usuario -->
+      <div class="group">
+        <label class="title-input">Usuario</label>
+        <input 
+          type="text" 
+          [(ngModel)]="username" 
+          name="username" 
+          required
+          placeholder="Nombre de usuario"
+          class="form-input custom-border w-full"
+        />
+      </div>
+
+      <!-- Contraseña -->
+      <div class="group">
+        <label class="title-input">Contraseña</label>
+        <input 
+          [type]="showPassword ? 'text' : 'password'"
+          [(ngModel)]="password" 
+          name="password" 
+          required
+          placeholder="Contraseña"
+          class="form-input custom-border w-full"
+        />
+        <!-- Botón de mostrar/ocultar -->
+        <button
+          type="button"
+          (click)="showPassword = !showPassword"
+          class="absolute right-10 mt-2.5 text-gray-500 hover:text-gray-800 focus:outline-none"
+          tabindex="-1"
+        >
+          <i class="fa-solid text-2xl" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="error" class="text-red-600 text-sm">
+        {{ error }}
+      </div>
+
+      <!-- Botón de login -->
+      <div class="flex justify-end">
+        <button 
+          type="submit" 
+          [disabled]="!username || !password || loginInProgress"
+          
+          class="px-4 py-2 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer">
+          
+          <div *ngIf="loginInProgress" class="inline-block spinner border-t-2 border-white border-solid rounded-full w-4 h-4 animate-spin ml-1"></div>
+
+          <i *ngIf="!loginInProgress" class="fa-solid fa-arrow-right-to-bracket mr-2"></i>
+          Entrar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

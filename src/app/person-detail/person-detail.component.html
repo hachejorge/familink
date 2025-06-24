@@ -1,0 +1,182 @@
+<div
+  class="fixed right-0 bg-green-50 z-[9999] overflow-y-auto 
+         shadow-xl transition-transform duration-300 ease-in-out 
+         rounded-l-2xl transform
+         w-full sm:w-3/4 md:w-1/2 lg:w-1/3 "
+  [ngClass]="{
+    'translate-x-0': personDetails,
+    'translate-x-full pointer-events-none': !personDetails
+  }"
+  @slideInOut
+  style="top: 4rem; max-height: calc(100vh - 4rem);"
+>
+
+<!-- Header del panel -->
+<div class="w-full h-40 bg-emerald-300 relative flex items-end px-5 pb-3">
+
+  <!-- Imagen flotando encima del área morada -->
+  <img 
+    [src]="personDetails.imageUrl" 
+    alt="Foto de {{ personDetails.firstName }}"
+    class="w-36 h-36 object-cover rounded-full border-4 border-green-50 absolute -bottom-10 left-10 z-10 bg-white"
+  >
+
+  <!-- Contenedor de botones a la derecha de la imagen -->
+  <div class="ml-auto flex flex-col space-y-3 z-20">
+    <button (click)="onViewAscendants()" 
+      class="bg-white px-3 py-1.5 rounded-2xl border-2 border-white
+      hover:cursor-pointer hover:bg-gray-200 hover:border-emerald-700 transition-colors transform ease-in-out 500ms">
+      <span class="flex items-center">
+        <img src="rama.png" class="h-6 w-6 mr-2">
+        Ver Ascendencia
+      </span>
+    </button>
+    <button (click)="onViewDescendants()" 
+      class="bg-white px-3 py-1.5 rounded-2xl border-2 border-white
+      hover:cursor-pointer hover:bg-gray-200 hover:border-emerald-700 transition-colors transform ease-in-out 500ms">
+      <span class="flex items-center">
+        <img src="raiz.png" class="h6 w-6 mr-2">
+        Ver Descendencia
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="absolute top-5 left-5 flex items-center space-x-3">
+
+  <!-- Botón de cerrar -->
+  <button
+    (click)="onClosePanel()"
+    class="hover:cursor-pointer hover:scale-110"
+    title="Cerrar panel"
+  >
+    <img src="x.png" class="h-6 w-6">
+  </button>
+   <button
+      *ngIf="role === 'ADMIN'"
+      (click)="onHoverShowOptions()"
+      class="hover:cursor-pointer hover:scale-110"
+      title="Ver más opciones"
+    >
+    <img src="detalles.png" class="h-6 w-6">
+   </button>
+  <!-- Panel flotante de opciones -->
+  <div 
+    *ngIf="showOptionsPanel"
+    class="absolute top-10 left-10 bg-white shadow-lg rounded-xl z-50 p-2 flex flex-col w-80"
+    (mouseleave)="showOptionsPanel = false"
+  >
+    <button 
+      class="text-left w-full hover:bg-emerald-100 px-4 py-2 rounded-md transition" 
+      (click)="onManageRelatives()"
+    >
+      <div class="flex items-center">
+        <i class="fa-solid fa-square-plus mr-4"></i>
+          Gestionar familiares
+
+      </div>
+    </button>
+    <button 
+      class="text-left w-full hover:bg-emerald-100 px-4 py-2 rounded-md transition" 
+      (click)="onEditPerson()"
+    >
+    <div class="flex items-center">
+      <img src="avatar-de-usuario.png" class="h-5 w-5 mr-2">
+
+      Editar datos de {{ personDetails.firstName }}
+    </div>
+    </button>
+  </div>
+  <button
+    (click)="onEditPerson()"
+    class="hover:cursor-pointer hover:scale-110"
+    title="Editar persona"
+  >
+  </button>
+</div>
+
+
+  <!-- Cargando -->
+  <div *ngIf="loading" class="text-center mt-10 text-emerald-700 font-medium">
+    Cargando información...
+  </div>
+
+  <!-- Contenido de la persona -->
+  <div *ngIf="!loading && personDetails" [@contentFade] class="p-6 mt-6">
+    
+    <p class="text-1xl">
+      <strong>Nombre Completo:</strong> 
+    </p>
+    
+    <div class="flex items-center mb-4">
+      <h2 class="text-xl mr-2">
+        {{ personDetails.firstName }} {{ personDetails.lastName }}
+      </h2>
+      <img class="h-6 w-6" src="masculino.png" *ngIf="personDetails.gender === 'M'">
+      <img class="h-6 w-6" src="hembra.png" *ngIf="personDetails.gender === 'F'"  >
+    </div>
+
+    <p class="text-1xl">
+      <strong>Origen:</strong> 
+    </p>
+    
+    <h2 class="text-xl mb-4">
+      {{ personDetails.originPlace === null ? 'Desconocido' : personDetails.originPlace }}
+    </h2>
+    
+    <div class="flex mb-4">
+      <div class="w-1/2">
+        <h3 class="text-1xl font-bold mb-">
+          <strong>Fecha de Nacimiento:</strong> 
+        </h3>
+
+        <h2 class="text-xl">
+          {{ formatearFecha(personDetails.birthDate) }}
+        </h2>
+      </div>
+      <div *ngIf="!personDetails.isAlive" class="w-1/2">
+
+        <h3 class="text-1xl font-bold mb-">
+          <strong>Fecha de Fallecimiento:</strong> 
+        </h3>
+
+        <h2 class="text-xl">
+          {{ formatearFecha(personDetails.deathDate) }}
+        </h2>
+
+      </div>
+
+    </div>
+
+    <div *ngIf="personDetails.biography">
+        <h3 class="text-1xl font-bold mb-">
+          <strong>Biografía:</strong> 
+        </h3>
+        <h2 class="text-xl">
+          {{ personDetails.biography }}
+        </h2>
+    </div>
+
+    <div *ngIf="personDetails.siblings && personDetails.siblings.length > 0" 
+      class="mt-4">
+      <h3 class="text-1xl font-bold mb-">
+        <strong>Hermanos:</strong> 
+      </h3>
+      <div class="overflow-x-auto">
+        <ul class="flex gap-6 mt-2 justify-start">
+          <li *ngFor="let sibling of personDetails.siblings" class="flex flex-col items-center flex-shrink-0">
+            <img 
+              [src]="sibling.imageUrl ? sibling.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
+              [alt]="'Foto de ' + sibling.firstName"
+              class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700 mb-2"
+            >
+            <span class="text-md text-center whitespace-nowrap">
+              {{ sibling.firstName }}
+            </span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+

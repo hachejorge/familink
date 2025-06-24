@@ -1,1 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+.title-input {
+    @apply ml-1 mb-1 text-sm font-bold
+}
+
+.form-input {
+    @apply bg-white placeholder-gray-500 w-full px-4 py-2 rounded-2xl transition-all duration-200 outline-none focus:outline-none shadow
+}
+
+.concrete-relative-container {
+  @apply flex flex-col w-full max-w-3xl p-5 bg-white shadow-2xl rounded-3xl
+}
+
+@layer utilities {
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes lineRise {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  .animate-line-rise {
+    animation: lineRise 0.5s ease-out forwards;
+  }
+}

@@ -1,0 +1,178 @@
+<div *ngIf="loading" class="flex items-center justify-center text-center text-6xl">
+    Cargando
+    <div class="inline-block spinner border-t-6 border-black border-solid rounded-full w-16 h-16 animate-spin ml-4"></div>
+</div>
+
+<div class="absolute mt-10 -ml-15">
+    <i class="fa-solid fa-reply text-3xl hover:text-gray-700 hover:scale-110 hover:cursor-pointer" (click)="close()"></i>
+</div>
+
+<div *ngIf="!loading" class="flex flex-col space-y-5">
+    <div class="flex space-x-5">
+            <div class="concrete-relative-container">
+            <p class="mb-3"><strong>Matrimonio</strong></p>
+            <div class="flex items-center space-x-3">
+                <!-- Persona Raíz -->
+                <div class="flex w-1/2 items-center">
+                    <app-node-extended 
+                    [person]="rootPerson" 
+                    [typeOfNode]="RelativeType.ROOT" 
+                    (actionToDo)="handleAction($event)">
+                    </app-node-extended>
+                </div>
+                <span *ngIf="spouse" class="text-4xl">💍</span>
+                <!-- Conyuge sí procede -->
+                <div class="flex w-1/2">
+                    <app-node-extended 
+                    [person]="spouse" 
+                    [typeOfNode]="RelativeType.SPOUSE"
+                    (actionToDo)="handleAction($event)">
+                    </app-node-extended>
+                </div>
+            </div>
+        </div>
+
+        <!-- Padres -->
+        <div class="concrete-relative-container">
+            <div class="flex items-center justify-center text-center">
+                <p class="w-1/2 mb-3 mr-14"><strong>Padre</strong></p>
+                <p class="w-1/2 mb-3"><strong>Madre</strong></p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <!-- Padre -->
+                <div class="flex w-1/2">
+                    <app-node-extended 
+                    [person]="father" 
+                    [typeOfNode]="RelativeType.FATHER"
+                    (actionToDo)="handleAction($event)">
+                    </app-node-extended>
+                </div>
+                    <span *ngIf="father && mother" class="text-4xl">💍</span>
+                <!-- Madre -->
+                <div class="flex w-1/2">
+                    <app-node-extended 
+                    [person]="mother" 
+                    [typeOfNode]="RelativeType.MOTHER"  
+                    (actionToDo)="handleAction($event)">
+                    </app-node-extended>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+   <!-- Hermanos -->
+    <div class="concrete-relative-container">
+    <p class="mb-3"><strong>Hermanos</strong></p>
+
+    <!-- Contenedor principal en fila -->
+    <div class="flex min-w-full">
+        
+        <!-- Añadir hermano fijo -->
+        <div class="flex-shrink-0 sticky left-0 bg-white z-10 pr-5 pb-1.5">
+        <div class="flex flex-col items-center">
+            <app-node-extended 
+            [typeOfNode]="RelativeType.SIBLING"
+            (actionToDo)="handleAction($event)">
+            </app-node-extended>
+            <p class="text-sm text-black -mt-2">
+                Añadir hermano
+            </p>
+        </div>
+        </div>
+
+        <!-- Scroll horizontal solo para los hermanos -->
+        <div class="overflow-x-auto w-full scrollbar-hidden">
+        <div class="flex space-x-5 w-max min-w-full">
+            <ng-container *ngIf="siblings && siblings.length > 0">
+            <div *ngFor="let sibling of siblings" class="flex-shrink-0">
+                <app-node-extended 
+                [person]="sibling" 
+                [typeOfNode]="RelativeType.SIBLING"
+                (actionToDo)="handleAction($event)">
+                </app-node-extended>
+            </div>
+            </ng-container>
+        </div>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- Hijos -->
+    <div class="concrete-relative-container">
+    <p class="mb-3"><strong>Hijos</strong></p>
+
+    <!-- Contenedor principal en fila -->
+    <div class="flex min-w-full">
+        
+        <!-- Añadir hijo fijo -->
+        <div class="flex-shrink-0 sticky left-0 bg-white z-10 pr-5 pb-1.5">
+        <div class="flex flex-col items-center">
+            <app-node-extended 
+            [typeOfNode]="RelativeType.CHILD"
+            (actionToDo)="handleAction($event)">
+            </app-node-extended>
+            <p class="text-sm text-black -mt-2">
+                Añadir hijo
+            </p>
+        </div>
+        </div>
+
+        <!-- Contenedor scroll SOLO para los hijos -->
+        <div class="overflow-x-auto w-full">
+        <div class="flex space-x-5 w-max min-w-full">
+            <ng-container *ngIf="children && children.length > 0">
+            <div *ngFor="let child of children" class="flex-shrink-0">
+                <app-node-extended 
+                [person]="child" 
+                [typeOfNode]="RelativeType.CHILD"
+                (actionToDo)="handleAction($event)">
+                </app-node-extended>
+            </div>
+            </ng-container>
+        </div>
+        </div>
+
+    </div>
+    </div>
+
+</div>
+
+<app-person-edit
+  *ngIf="showEditPerson && personToEdit"
+  [person]="personToEdit"
+  (closeModal)="closeEditModal()"
+></app-person-edit>
+
+<app-person-new
+  *ngIf="showNewPerson && personToCreate"
+  [personToCreate]="personToCreate"
+  (closeModal)="closeNewModal()"
+></app-person-new>
+
+<div *ngIf="showDeletePerson">
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center space-y-6">
+      <h2 class="text-2xl font-semibold text-gray-800">¿Estás seguro?</h2>
+      <p class="text-gray-600">Esta acción eliminará permanentemente a <strong>{{ personToDelete?.firstName }} {{ personToDelete?.lastName }}</strong> y sus relaciones serán desvinculadas.</p>
+      
+      <div class="flex justify-center space-x-4">
+        <button 
+          class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-2xl hover:cursor-pointer"
+          (click)="deletePerson()"
+        >
+        <strong>
+            Eliminar
+        </strong>
+        </button>
+        <button 
+          class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded-2xl hover:cursor-pointer"
+          (click)="closeDeleteModal()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

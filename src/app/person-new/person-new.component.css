@@ -1,0 +1,23 @@
+.custom-border {
+  border-top: 2px solid var(--color-green-50);   
+  border-left: 2px solid var(--color-green-50);
+  border-right: 2px solid var(--color-gray-500); 
+  border-bottom: 2px solid var(--color-gray-500);
+  transition: border-color 0.3s ease;
+}
+
+/* Hover: todos los bordes violetas */
+.group:hover .custom-border {
+  border-color: var(--color-emerald-700) !important;
+}
+
+/* Focus: todos los bordes violetas */
+.custom-border:focus {
+  border-color: var(--color-emerald-700) !important;
+  outline: none;
+}
+
+.overlay-content {
+  transform-origin: bottom;
+  transition: transform 0.4s ease-in-out;
+}

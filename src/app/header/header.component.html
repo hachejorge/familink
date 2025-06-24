@@ -1,0 +1,30 @@
+<header class="shadow-md bg-gradient-to-r from-emerald-200 via-green-300 to-emerald-100 relative z-10">
+  <nav class="p-1">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="hover:scale-110 hover:cursor-pointer">
+        <i class="fa-solid fa-house fa-2xl" (click)="onBackToHome()"></i>
+      </div>
+      <img src="familink_sin_fondo.png" alt="Familink Logo" class="h-18">
+      <div class="flex space-x-4 items-center text-emerald-700"
+        (click)="showOptionsPanel = true">
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture" class="h-14 rounded-full border-2 border-emerald-700">
+        <span class="font-semibold">{{ username }}</span>
+      </div>
+      <div 
+        *ngIf="showOptionsPanel"
+        class="absolute top-10 right-5 bg-white shadow-lg rounded-xl z-50 p-2 flex flex-col w-80"
+        (mouseleave)="showOptionsPanel = false"
+      >
+        <button 
+          class="text-left w-full hover:bg-emerald-100 px-4 py-2 rounded-md transition" 
+          (click)="logOut()"
+        >
+          <div class="flex items-center">
+            <i class="fa-solid fa-door-closed mr-4"></i>              
+            Cerrar sesión
+          </div>
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
