@@ -136,8 +136,8 @@ export class BirthCalendarComponent {
 
   getTodayBirthdaysMessage(): string {
     const today = new Date();
-    const day = 25; //today.getDate();
-    const month = 5; //today.getMonth() + 1; // getMonth() es base 0
+    const day = today.getDate();
+    const month = today.getMonth() + 1; // getMonth() es base 0
     const year = today.getFullYear();
 
     const key = `${month}-${day}`;
