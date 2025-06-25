@@ -1,0 +1,79 @@
+<app-header (backToHome)="onBackToHome()"></app-header>
+
+<main class="bg-green-50 min-h-[calc(100vh-60px)] p-10 flex flex-col items-center justify-center space-y-5">
+  <div *ngIf="loading">Cargando...</div>
+  <div *ngIf="error">{{ error }}</div>
+
+
+    <div class="flex flex-col w-full max-w-screen-2xl bg-white shadow-lg rounded-xl p-6">
+        {{ getTodayBirthdaysMessage() }}
+        
+        <div             
+          class="flex justify-end items-center space-x-2 mx-4
+          transition-all duration-300"
+          @slideInOut>
+
+          <button (click)="toggleLegend()" class="text-xl hover:cursor-pointer hover:scale-110">
+            <i class="fa-solid fa-circle-chevron-down" [ngClass]="showLegend ? 'rotate-90' : '-rotate-90'"></i>
+          </button>
+
+          <strong >Leyenda:</strong>
+
+          <div
+            *ngIf="showLegend"
+            class="flex items-center space-x-3"
+          >
+            <div class="flex items-center space-x-3">
+              <div class="w-9 h-9 bg-amber-400 rounded-full border border-gray-300"></div>
+              <span>Día actual</span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <div class="w-9 h-9 bg-emerald-500 rounded-full border border-gray-300"></div>
+              <span>Día de cumpleaños</span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <div class="w-5 h-5 bg-green-100 rounded-full border border-gray-300"></div>
+              <span>Nº de cumpleañeros</span>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="grid gap-6 w-full max-w-screen-2xl
+                grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+        *ngIf="birthData">
+      
+
+      <div *ngFor="let month of months; let m = index" class="bg-white rounded-xl shadow-lg p-4">
+        <h2 class="text-xl font-bold mb-2">{{ month }}</h2>
+        <div class="grid grid-cols-7 gap-1 text-center text-sm">
+        <div class="font-semibold text-gray-500" *ngFor="let day of weekDays">{{ day }}</div>
+        <ng-container *ngIf="birthData">
+          <ng-container *ngFor="let _ of getEmptyStartDays(m)">
+            <div class="w-9 h-9 mx-[4.1px]"></div>
+          </ng-container>
+
+          <ng-container *ngFor="let day of getDaysInMonth(m)">
+            <div
+              class="w-9 h-9 mx-[4.1px] flex items-center justify-center rounded-full relative font-bold"
+              [ngClass]="{
+                'bg-emerald-500 cursor-pointer text-white font-extrabold': hasBirthday(m + 1, day),
+                'bg-amber-400 text-black font-bold': isToday(m + 1, day)
+              }"
+              [title]="getTooltip(m + 1, day)"
+            >
+              {{ day }}
+              <div *ngIf="numberOfBirthdays(m + 1, day) > 1" class="-right-1 px-1.5 -bottom-1 absolute z-50 rounded-full bg-green-100 text-black font-bold">
+                {{ numberOfBirthdays(m + 1, day) }}
+            </div>
+            </div>
+          
+          </ng-container>
+        </ng-container>
+        </div>
+      </div>
+    </div>
+
+
+
+</main>

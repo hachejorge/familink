@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 
@@ -15,7 +16,7 @@ export class HeaderComponent {
   username = '';
   showOptionsPanel = false;
 
-  constructor(public auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
 
   ngOnInit() {
@@ -25,6 +26,10 @@ export class HeaderComponent {
 
   onBackToHome() {
     this.backToHome.emit();
+  }
+
+  goToBirthDates() {
+    this.router.navigate(["/birthdates"])
   }
 
   logOut() {
