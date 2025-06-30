@@ -5,11 +5,12 @@ import { PersonDetails } from '../person.model';
 import { PersonEditService } from '../person-edit/person-edit.service';
 import { PopUpComponent } from '../pop-up/pop-up.component';
 import { NewPerson } from '../options.model';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-person-new',
   standalone: true,
-  imports: [CommonModule, FormsModule, PopUpComponent],
+  imports: [CommonModule, FormsModule, PopUpComponent, ImageCropperModule],
   templateUrl: './person-new.component.html',
   styleUrl: './person-new.component.css'
 })
@@ -64,24 +65,49 @@ export class PersonNewComponent {
     });
   }
 
-  onImageSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      this.imageUploading = true;
+  imageChangedEvent: any = null;
+  croppedImage: Blob | null = null;
+  showCropper: boolean = false;
 
-      this.personEditService.uploadFile(file).subscribe({
-        next: (response) => {
-          // Suponemos que el backend devuelve la URL en response.data.url
-          this.person.imageUrl = response.data.url;
-          this.imageUploading = false;
-        },
-        error: (error) => {
-          console.error('Error al subir la imagen', error);
-          this.imageUploading = false;
-        }
-      });
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.imageChangedEvent = event;
+      this.showCropper = true;
     }
+  }
+
+  imageCropped(event: any): void {
+    console.log('Imagen recortada:', event);
+    this.croppedImage = event.blob;
+  }
+
+  onCropperError() {
+    console.error("Error al cargar la imagen para recorte");
+  }
+
+
+  uploadCroppedImage(): void {
+    if (!this.croppedImage) {
+      console.warn('No hay imagen recortada disponible');
+      return;
+    }
+
+    this.imageUploading = true;
+    this.showCropper = false;
+
+    const file = new File([this.croppedImage], 'cropped-image.png', { type: 'image/png' });   
+
+    this.personEditService.uploadFile(file).subscribe({
+      next: (response) => {
+        this.person.imageUrl = response.data.url;
+        this.imageUploading = false;
+      },
+      error: (error) => {
+        console.error('Error al subir la imagen recortada', error);
+        this.imageUploading = false;
+      }
+    });
   }
 
   getRequestObservableByRelation() {
