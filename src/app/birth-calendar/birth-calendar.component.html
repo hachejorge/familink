@@ -57,18 +57,46 @@
             <div
               class="w-9 h-9 mx-[4.1px] flex items-center justify-center rounded-full relative font-bold"
               [ngClass]="{
-                'bg-emerald-500 cursor-pointer text-white font-extrabold': hasBirthday(m + 1, day),
+                'bg-emerald-500 text-white font-extrabold cursor-pointer': hasBirthday(m + 1, day),
                 'bg-amber-400 text-black font-bold': isToday(m + 1, day)
               }"
-              [title]="getTooltip(m + 1, day)"
+                (mouseenter)="hasBirthday(m + 1, day) && showBirthDateOf(m + 1, day, $event)"
             >
               {{ day }}
               <div *ngIf="numberOfBirthdays(m + 1, day) > 1" class="-right-1 px-1.5 -bottom-1 absolute z-50 rounded-full bg-green-100 text-black font-bold">
                 {{ numberOfBirthdays(m + 1, day) }}
+              </div>
+
+              <!-- Mostrar tooltip solo en el día seleccionado -->
+              <div 
+                *ngIf="showBirthDates && selectedBirthDay?.month === (m + 1) && selectedBirthDay?.day === day"
+                class="absolute bg-white shadow-lg rounded-xl z-50 p-2 flex flex-col w-80"
+                [ngClass]="[
+                  tooltipPositionW === 'left' ? 'right-full' : 'left-full',
+                  tooltipPositionH === 'bottom' ? 'bottom-full' : 'top-full'
+                ]"
+                (mouseleave)="showBirthDates = false"
+              >
+                <div *ngFor="let person of birthdaysByMonthDay[selectedBirthDay?.month + '-' + selectedBirthDay?.day]">
+                  <div class="flex items-center space-x-4 p-2 rounded-md hover:bg-emerald-100">
+                    <img 
+                      [src]="person.imageUrl || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
+                      alt="{{ person.firstName }}" 
+                      class="w-20 h-20 rounded-full object-cover border"
+                    />
+                    <div class="text-left">
+                      <p class="font-semibold text-black">
+                        {{ person.firstName }} {{ person.lastName || '' }}
+                      </p>
+                      <p class="text-sm text-gray-600">Cumple: {{ person.ageThisYear }} años</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            </div>
-          
           </ng-container>
+
+          
         </ng-container>
         </div>
       </div>

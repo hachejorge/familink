@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AscendantTree, DescendantTree, Person, PersonDetails, TreeType } from '../person.model';
 import { AscendantTreeComponent } from '../ascendant-tree/ascendant-tree.component';
 import { TreeService } from '../ascendant-tree/tree.service';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from '../header/header.component';
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
   panzoomInstance: any;
   diagramName : string = '';
 
-  constructor(private treeService: TreeService) {}
+  constructor(private treeService: TreeService, private router: Router) {}
 
   selectedPersonId: string | null = null;
 
@@ -82,6 +82,7 @@ export class HomeComponent implements OnInit {
         this.error = 'Error al cargar el árbol genealógico.';
         this.loading = false;
         console.error(err);
+        this.router.navigate(['/login']);
       }
     });
   }

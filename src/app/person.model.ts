@@ -38,4 +38,6 @@ export interface PersonDetails {
   isAlive?: boolean;
   birthDate?: string;
   deathDate?: string;
+    ageThisYear?: number;
+
 }

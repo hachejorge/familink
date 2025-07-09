@@ -39,7 +39,7 @@ export class BirthCalendarComponent {
 
   birthdaysByMonthDay: { [key: string]: PersonDetails[] } = {};
 
-
+  showBirthDates: Boolean = false;
   showLegend = false;
 
   toggleLegend() {
@@ -117,13 +117,6 @@ export class BirthCalendarComponent {
     return todayMonth === month && todayDay === day;
   }
 
-  getTooltip(month: number, day: number): string {
-    const key = `${month}-${day}`;
-    const people = this.birthdaysByMonthDay[key];
-    if (!people) return '';
-    return people.map(p => `${p.firstName} cumple ${(p as any).ageThisYear} años`).join('\n');
-  }
-
   getEmptyStartDays(monthIndex: number): any[] {
     const year = new Date().getFullYear();
     const firstDayOfMonth = new Date(year, monthIndex, 1).getDay(); // 0 (Dom) - 6 (Sáb)
@@ -133,6 +126,32 @@ export class BirthCalendarComponent {
 
     return Array(adjusted).fill(0); // retorna un array del tamaño necesario
   }
+
+  selectedBirthDay: { month: number, day: number } | null = null;
+  tooltipPositionW: 'left' | 'right' = 'right';
+  tooltipPositionH: 'top' | 'bottom' = 'top';
+
+  showBirthDateOf(month: number, day: number, event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const rect = target.getBoundingClientRect();
+
+    // Determina si está en la zona derecha
+    const isOnRightSide = rect.left > window.innerWidth * 0.7;
+    // Determina si está en la zona inferior
+    const isOnBottomSide = rect.top > window.innerHeight * 0.7;
+
+    if (isOnBottomSide) {
+      this.tooltipPositionH = 'bottom';
+    } else if (isOnRightSide) {
+      this.tooltipPositionW = 'left';
+    } else {
+      this.tooltipPositionW = 'right';
+    }
+
+    this.selectedBirthDay = { month, day };
+    this.showBirthDates = true;
+  }
+
 
   getTodayBirthdaysMessage(): string {
     const today = new Date();
