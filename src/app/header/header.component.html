@@ -5,7 +5,7 @@
        
         <div class="flex items-center group hover:cursor-pointer space-x-2
           shadow-2xl px-4 py-2 rounded-2xl hover:scale-105 bg-green-50"
-          (click)="onBackToHome()">
+          (click)="goToHome()">
           <img src="rama.png" class="h-6 w-6">
           <p class="group-hover:underline"><strong>Árbol genealógico</strong></p>
         </div>
@@ -15,6 +15,13 @@
           (click)="goToBirthDates()">
           <i class="fa-solid fa-cake-candles text-2xl"></i>
           <p class="group-hover:underline"><strong>Cumpleaños</strong></p>
+        </div>
+
+        <div class="flex items-center group hover:cursor-pointer space-x-2
+          shadow-2xl px-4 py-2 rounded-2xl hover:scale-105 bg-green-50"
+          (click)="goToChera()">
+          <i class="fa-solid fa-house-chimney-user text-2xl"></i>
+          <p class="group-hover:underline"><strong>Chera</strong></p>
         </div>
       
       </div>

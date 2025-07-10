@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'
 import { HeaderComponent } from '../header/header.component';
 import { CommonModule } from '@angular/common';
 import { BirthService } from '../services/birth.service'
@@ -31,7 +30,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
   ]
 })
 export class BirthCalendarComponent {
-  constructor(private birthService : BirthService ,private router: Router) {}
+  constructor(private birthService : BirthService) {}
 
   error = '';
   loading = true;
@@ -81,10 +80,6 @@ export class BirthCalendarComponent {
         console.error(err);
       }
     });
-  }
-
-  onBackToHome() {
-    this.router.navigate(['/'])
   }
 
   months = [

@@ -30,7 +30,6 @@ export class HomeComponent implements OnInit {
   @ViewChild('treeWrapper', { static: false }) treeWrapper!: ElementRef;
   @ViewChild('panzoomContent', { static: false }) panzoomContent!: ElementRef;
 
-  panzoomInstance: any;
   diagramName : string = '';
 
   constructor(private treeService: TreeService, private router: Router) {}
@@ -88,6 +87,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
+    this.data = null;
+    this.data2 = null;
+    this.showManageRelatives = false;
     this.initTree();
   }
 
@@ -131,14 +134,6 @@ export class HomeComponent implements OnInit {
 
   closePanel() {
     this.selectedPersonId = null;
-  }
-
-  onBackToHome() {
-    this.loading = true;
-    this.data = null;
-    this.data2 = null;
-    this.showManageRelatives = false;
-    this.initTree();
   }
 
   backToTree() {

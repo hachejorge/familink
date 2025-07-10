@@ -4,7 +4,6 @@
   *ngIf="selectedPersonId"
   [personId]="selectedPersonId"
   (close)="closePanel()"
-  (personTree)="loadTree($event)"
   (personEdit)="editPerson($event)"
   (manageRelatives)="manageRelatives($event)"
 ></app-person-detail>
@@ -20,16 +19,10 @@
     (closePage)="backToTree()"
   ></app-person-details-extended>
 
-  <app-zoom-wrapper *ngIf="(data || data2) && !showManageRelatives" [diagramName]="diagramName">
-    <app-ascendant-tree
+  <app-zoom-wrapper *ngIf="data && !showManageRelatives" [diagramName]="diagramName">
+    <app-descendant-tree
       *ngIf="data"
       [data]="data"
-      (personSelected)="onPersonSelected($event)"
-    ></app-ascendant-tree>
-
-    <app-descendant-tree
-      *ngIf="data2"
-      [data]="data2"
       (personSelected)="onPersonSelected($event)"
     ></app-descendant-tree>
   </app-zoom-wrapper>
@@ -41,6 +34,3 @@
   [person]="personToEdit"
   (closeModal)="closeEditModal()"
 ></app-person-edit>
-
-
-<router-outlet></router-outlet>

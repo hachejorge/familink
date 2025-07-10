@@ -1,0 +1,26 @@
+<app-header></app-header>
+
+
+<main class="bg-green-50 min-h-[calc(100vh-60px)] p-10 flex flex-col items-center justify-center space-y-5">
+  <div *ngIf="loading">Cargando...</div>
+  <div *ngIf="error">{{ error }}</div>
+
+    <div *ngIf="cheraFamilies && cheraFamilies.length" class="flex flex-col">
+        <div *ngFor="let family of cheraFamilies" class="bg-white p-4 rounded-2xl shadow mb-4 w-full max-w flex items-center">
+            <div class="flex flex-col mr-6">
+                <h2>Familia:</h2>
+                <h2 class="text-xl font-bold">
+                    <i class="fa-solid fa-people-roof mr-1"></i>
+                    {{ family.name }}
+                </h2>
+                <p class="text-gray-700">{{ family.description }}</p>
+            </div>
+            <div class="ml-auto flex items-center">
+                <i class="fa-solid fa-magnifying-glass p-2 hover:cursor-pointer text-2xl rounded-full hover:scale-110 hover:bg-emerald-100 transform transition"
+                (click)="viewFamilyDetails(family.familyHeadId)"
+                ></i>
+            </div>
+        </div>
+    </div>
+
+</main>

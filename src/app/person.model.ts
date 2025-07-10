@@ -38,6 +38,12 @@ export interface PersonDetails {
   isAlive?: boolean;
   birthDate?: string;
   deathDate?: string;
-    ageThisYear?: number;
+  ageThisYear?: number;
+}
 
+export interface CheraFamilies {
+  id: number;
+  name: string;
+  description?: string;
+  familyHeadId: number;
 }

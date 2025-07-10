@@ -11,25 +11,26 @@ import { AuthService } from '../services/auth.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  @Output() backToHome = new EventEmitter<void>();
-
   username = '';
   showOptionsPanel = false;
 
   constructor(private auth: AuthService, private router: Router) {}
-
 
   ngOnInit() {
     this.username = this.auth.getUserName() ?? '';
     console.log("Usuario = " + this.username)
   }
 
-  onBackToHome() {
-    this.backToHome.emit();
+  goToHome() {
+    this.router.navigate(["/"]);
   }
 
   goToBirthDates() {
     this.router.navigate(["/birthdates"])
+  }
+
+  goToChera() {
+    this.router.navigate(["/chera"])
   }
 
   logOut() {
