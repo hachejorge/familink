@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TreeService } from '../ascendant-tree/tree.service';
-import { DescendantTree, Person, PersonDetails } from '../person.model';
+import { DescendantTree, Person, PersonDetails, TreeType } from '../person.model';
 import { CommonModule } from '@angular/common';
 import { ZoomWrapperComponent } from '../zoom-wrapper/zoom-wrapper.component';
 import { DescendantTreeComponent } from '../descendant-tree/descendant-tree.component';
@@ -18,7 +18,7 @@ import { PersonEditComponent } from '../person-edit/person-edit.component';
 })
 export class CheraFamilyDetailsComponent {
   personToManage: Person | null = null;
-  constructor(private route: ActivatedRoute, private treeService: TreeService) {}
+  constructor(private route: ActivatedRoute, private treeService: TreeService, private router: Router) {}
 
   selectedPersonId: string | null = null;
 
@@ -89,4 +89,9 @@ export class CheraFamilyDetailsComponent {
     this.personToEdit = person;
   }
 
+  loadTree(event: { id: number, type: TreeType }) {
+    this.router.navigate(['/', event.id, event.type === TreeType.ASCENDANT ? 'ascendant' : 'descendant']).then(() => {
+      // Aquí puedes realizar acciones adicionales después de la navegación, si es necesario
+    });
+  }
 }

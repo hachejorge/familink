@@ -8,9 +8,10 @@ import { CheraFamilyDetailsComponent } from './chera-family-details/chera-family
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] }, // <--- ahora HomeComponent
   { path: 'birthdates', component: BirthCalendarComponent, canActivate: [AuthGuard]},
   { path: 'chera', component: CheraFamiliesComponent, canActivate: [AuthGuard]},
   { path: 'chera/:id', component: CheraFamilyDetailsComponent, canActivate: [AuthGuard] },
+  { path: ':id/:type', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: '1/ascendant', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];

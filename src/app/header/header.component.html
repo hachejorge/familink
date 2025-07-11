@@ -2,28 +2,38 @@
   <nav class="p-1">
     <div class="container mx-auto flex justify-between items-center">
       <div class="flex space-x-5">  
-       
-        <div class="flex items-center group hover:cursor-pointer space-x-2
-          shadow-2xl px-4 py-2 rounded-2xl hover:scale-105 bg-green-50"
-          (click)="goToHome()">
-          <img src="rama.png" class="h-6 w-6">
+        <div 
+          class="flex items-center group hover:cursor-pointer space-x-2 shadow-2xl px-4 py-2 rounded-2xl hover:scale-105"
+          [ngClass]="{
+        'bg-emerald-600 text-white': selectedNav === 'home',
+        'bg-green-50 text-emerald-700': selectedNav !== 'home'
+          }"
+          (click)="goToHome();">
+          <i class="fa-brands fa-pagelines text-2xl"></i>
           <p class="group-hover:underline"><strong>Árbol genealógico</strong></p>
         </div>
-        
-        <div class="flex items-center group hover:cursor-pointer space-x-2
-          shadow-2xl px-4 py-2 rounded-2xl hover:scale-105 bg-green-50"
-          (click)="goToBirthDates()">
+
+        <div 
+          class="flex items-center group hover:cursor-pointer space-x-2 shadow-2xl px-4 py-2 rounded-2xl hover:scale-105"
+          [ngClass]="{
+        'bg-emerald-600 text-white': selectedNav === 'birthdays',
+        'bg-green-50 text-emerald-700': selectedNav !== 'birthdays'
+          }"
+          (click)="goToBirthDates();">
           <i class="fa-solid fa-cake-candles text-2xl"></i>
           <p class="group-hover:underline"><strong>Cumpleaños</strong></p>
         </div>
 
-        <div class="flex items-center group hover:cursor-pointer space-x-2
-          shadow-2xl px-4 py-2 rounded-2xl hover:scale-105 bg-green-50"
+        <div 
+          class="flex items-center group hover:cursor-pointer space-x-2 shadow-2xl px-4 py-2 rounded-2xl hover:scale-105"
+          [ngClass]="{
+        'bg-emerald-600 text-white': selectedNav === 'chera',
+        'bg-green-50 text-emerald-700': selectedNav !== 'chera'
+          }"
           (click)="goToChera()">
           <i class="fa-solid fa-house-chimney-user text-2xl"></i>
           <p class="group-hover:underline"><strong>Chera</strong></p>
         </div>
-      
       </div>
       
 

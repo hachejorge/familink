@@ -4,6 +4,7 @@
   *ngIf="selectedPersonId"
   [personId]="selectedPersonId"
   (close)="closePanel()"
+  (personTree)="loadTree($event)"
   (personEdit)="editPerson($event)"
   (manageRelatives)="manageRelatives($event)"
 ></app-person-detail>

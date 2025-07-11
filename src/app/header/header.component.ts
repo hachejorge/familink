@@ -13,23 +13,41 @@ import { AuthService } from '../services/auth.service';
 export class HeaderComponent {
   username = '';
   showOptionsPanel = false;
+  selectedNav = '';
 
   constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit() {
+    const currentUrl = this.router.url;
+    if (currentUrl === '/' || currentUrl.startsWith('/home')) {
+      this.selectedNav = 'home';
+    } else if (currentUrl.startsWith('/birthdates')) {
+      this.selectedNav = 'birthdays';
+    } else if (currentUrl.startsWith('/chera')) {
+      this.selectedNav = 'chera';
+    } else {
+      this.selectedNav = '';
+    }
     this.username = this.auth.getUserName() ?? '';
     console.log("Usuario = " + this.username)
   }
 
   goToHome() {
-    this.router.navigate(["/"]);
+    this.selectedNav = 'home';
+    if (this.router.url === "/") {
+      window.location.reload();
+    } else {
+      this.router.navigate(["/"]);
+    }
   }
 
   goToBirthDates() {
+    this.selectedNav = 'birthdays';
     this.router.navigate(["/birthdates"])
   }
 
   goToChera() {
+    this.selectedNav = 'chera';
     this.router.navigate(["/chera"])
   }
 

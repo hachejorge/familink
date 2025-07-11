@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AscendantTree, DescendantTree, Person, PersonDetails, TreeType } from '../person.model';
 import { AscendantTreeComponent } from '../ascendant-tree/ascendant-tree.component';
 import { TreeService } from '../ascendant-tree/tree.service';
-import { Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from '../header/header.component';
@@ -32,7 +32,11 @@ export class HomeComponent implements OnInit {
 
   diagramName : string = '';
 
-  constructor(private treeService: TreeService, private router: Router) {}
+  constructor(
+    private treeService: TreeService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   selectedPersonId: string | null = null;
 
@@ -91,7 +95,19 @@ export class HomeComponent implements OnInit {
     this.data = null;
     this.data2 = null;
     this.showManageRelatives = false;
-    this.initTree();
+
+    this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      const typeStr = params.get('type');
+
+      if (id && (typeStr === 'ascendant' || typeStr === 'descendant')) {
+        const treeType = typeStr === 'ascendant' ? TreeType.ASCENDANT : TreeType.DESCENDANT;
+        this.loadTree({ id, type: treeType });
+      } else {
+        // si no hay parámetros, cargar el árbol por defecto
+        this.initTree();
+      }
+    });
   }
 
   loadTree(event: { id: number, type: TreeType }) {
