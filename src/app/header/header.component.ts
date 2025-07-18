@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { SearcherComponent } from '../searcher/searcher.component';
 
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule],
+  imports: [CommonModule, SearcherComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })

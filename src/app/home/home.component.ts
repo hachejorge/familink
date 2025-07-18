@@ -144,6 +144,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  navigateTo(event: { id: number, type: TreeType }) {
+    this.router.navigate([`/home/${event.id}/${event.type}`]);
+  }
+
   onPersonSelected(id: number | string) {
     this.selectedPersonId = String(id); // convertir por seguridad
   }

@@ -1,0 +1,209 @@
+<app-header></app-header>
+
+<main class="bg-green-50 min-h-[calc(100vh-60px)] p-10 flex items-center justify-center">
+
+  <div *ngIf="loading">Cargando...</div>
+  <div *ngIf="error">{{ error }}</div>
+
+  <app-person-details-extended 
+    *ngIf="showEditFamily && personToManage"
+    [rootPerson]="personToManage"
+    (closePage)="backToPerson()"
+  ></app-person-details-extended>
+
+  <ng-container *ngIf="personDetails && !showEditFamily">
+
+    <div class="flex flex-col bg-white shadow-md rounded-xl w-full max-w-3xl">
+      
+      <!-- Contenedor Verde superior -->
+      <div class="w-full h-40 bg-emerald-300 relative flex items-end px-5 pb-3 rounded-t-xl">
+        
+        <div class="relative group w-36 h-36">
+          <img
+            [src]="personDetails.imageUrl ? personDetails.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'"  
+            alt="Foto de {{ personDetails.firstName }}"
+            class="w-36 h-36 object-cover rounded-full border-4 border-green-50 absolute -bottom-10 left-10 z-10 bg-white"
+          />
+          <div
+            class="absolute -bottom-10 left-10 w-36 h-36 rounded-full z-20 flex items-center justify-center
+              group-hover:bg-black/60 bg-opacity-0 transition-all duration-300 cursor-pointer"
+            (click)="onEditFamily()"
+          >
+            <span
+              class="flex flex-col items-center text-white text-lg font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+              <i class="fa-solid fa-user-pen mr-2"></i>
+              Editar Familia
+            </span>
+          </div>
+        </div>
+
+        <!-- Contenedor de botones a la derecha de la imagen -->
+        <div class="ml-auto flex flex-col space-y-3">
+          <button (click)="onViewAscendants()" 
+            class="bg-white px-3 py-1.5 rounded-2xl border-2 border-white
+            hover:cursor-pointer hover:bg-gray-200 hover:border-emerald-700 transition-colors transform ease-in-out 500ms">
+            <span class="flex items-center">
+              <img src="rama.png" class="h-6 w-6 mr-2">
+              Ver Ascendencia
+            </span>
+          </button>
+          <button (click)="onViewDescendants()" 
+            class="bg-white px-3 py-1.5 rounded-2xl border-2 border-white
+            hover:cursor-pointer hover:bg-gray-200 hover:border-emerald-700 transition-colors transform ease-in-out 500ms">
+            <span class="flex items-center">
+              <img src="raiz.png" class="h6 w-6 mr-2">
+              Ver Descendencia
+            </span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Contenido principal -->
+      <div class="p-6 mt-6">
+
+        <!-- Nombre y género -->
+        <div class="flex items-center space-x-3">
+            <h2 class="text-2xl font-semibold">
+              {{ personDetails.firstName }} {{ personDetails.lastName }}
+            </h2>
+            <div class="flex items-center gap-2 mt-1">
+              <img *ngIf="personDetails.gender === 'M'" src="masculino.png" alt="Hombre" class="h-6 w-6" />
+              <img *ngIf="personDetails.gender === 'F'" src="hembra.png" alt="Mujer" class="h-6 w-6" />
+            </div>
+        </div>
+
+        <!-- Origen -->
+        <p class="text-1xl mt-2">
+          <strong>Origen:</strong> 
+        </p>
+        
+        <h2 class="text-xl mb-4">
+          {{ personDetails.originPlace === null ? 'Desconocido' : personDetails.originPlace }}
+        </h2>
+        
+        <!-- Fechas de Nacimiento y defunción -->
+        <div class="flex mb-4">
+          <div class="w-1/2">
+            <h3 class="text-1xl font-bold mb-">
+              <strong>Fecha de Nacimiento:</strong> 
+            </h3>
+
+            <h2 class="text-xl">
+              {{ formatearFecha(personDetails.birthDate ?? null) }}
+            </h2>
+          </div>
+          <div *ngIf="!personDetails.isAlive" class="w-1/2">
+            <h3 class="text-1xl font-bold mb-">
+              <strong>Fecha de Fallecimiento:</strong> 
+            </h3>
+            <h2 class="text-xl">
+              {{ formatearFecha(personDetails.deathDate ?? null) }}
+            </h2>
+          </div>
+        </div>
+
+        <!-- Biografía -->
+        <div *ngIf="personDetails.biography">
+          <h3 class="text-1xl font-bold mb-">
+            <strong>Biografía:</strong> 
+          </h3>
+          <h2 class="text-xl">
+            {{ personDetails.biography }}
+          </h2>
+        </div>
+
+        <!-- Esposo/a y padres -->
+        <div *ngIf="spouse || father || mother" class="mt-4 flex items-center justify-center gap-4">
+
+          <!-- Esposo/a -->
+          <div *ngIf="spouse" class="flex flex-col items-center w-1/3 space-y-1">
+            <strong> <i class="fa-solid fa-ring"></i> Esposo/a:</strong>
+              <img 
+                  [src]="spouse.imageUrl ? spouse.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
+                  [alt]="'Foto de ' + spouse.firstName"
+                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700"
+                >
+                <span class="text-md">
+                  {{ spouse.firstName }} {{ spouse.lastName }}
+                </span>
+          </div>
+
+          <!-- Padre -->
+          <div *ngIf="father" class="flex flex-col items-center space-y-1 w-1/3">
+            <strong>Padre:</strong>
+              <img 
+                  [src]="father.imageUrl ? father.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
+                  [alt]="'Foto de ' + father.firstName"
+                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700 mb-2"
+                >
+                <span class="text-md">
+                  {{ father.firstName }} {{ father.lastName }}
+                </span>
+          </div>
+
+          <!-- Madre -->
+          <div *ngIf="mother" class="flex flex-col items-center space-y-1 w-1/3">
+            <strong>Madre:</strong>
+              <img 
+                  [src]="mother.imageUrl ? mother.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
+                  [alt]="'Foto de ' + mother.firstName"
+                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700"
+                >
+                <span class="text-md">
+                  {{ mother.firstName }} {{ mother.lastName }}
+                </span>
+          </div>
+
+        </div>
+
+        <!-- Hermanos -->
+        <div *ngIf="siblings && siblings.length > 0" class="mt-4">
+          <h3 class="text-1xl font-bold mb-">
+            <strong> <i class="fa-solid fa-children"></i> Hermanos:</strong> 
+          </h3>
+          <div class="overflow-x-auto">
+            <ul class="flex gap-6 mt-2 justify-start">
+              <li *ngFor="let sibling of siblings" class="flex flex-col items-center flex-shrink-0">
+                <img 
+                  [src]="sibling.imageUrl ? sibling.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
+                  [alt]="'Foto de ' + sibling.firstName"
+                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700 mb-2"
+                >
+                <span class="text-md text-center whitespace-nowrap">
+                  {{ sibling.firstName }}
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Hijos -->
+        <div *ngIf="children && children.length > 0" class="mt-4">
+          <h3 class="text-1xl font-bold mb-">
+            <strong> <i class="fa-solid fa-baby"></i> Hijos:</strong> 
+          </h3>
+          <div class="overflow-x-auto">
+            <ul class="flex gap-6 mt-2 justify-start">
+              <li *ngFor="let child of children" class="flex flex-col items-center flex-shrink-0">
+                <img 
+                  [src]="child.imageUrl ? child.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
+                  [alt]="'Foto de ' + child.firstName"
+                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700 mb-2"
+                >
+                <span class="text-md text-center whitespace-nowrap">
+                  {{ child.firstName }}
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      
+      
+      </div>
+      </div>
+
+  </ng-container>
+</main>

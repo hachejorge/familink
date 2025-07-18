@@ -1,0 +1,43 @@
+<div class="relative w-full max-w-xl mx-auto mt-2 z-50">
+    <div class="relative w-full">
+        <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchChange()"
+            placeholder="Buscar persona..."
+            class="w-full px-4 py-2 bg-green-50 rounded-2xl shadow-sm focus:bg-emerald-100 placeholder:text-gray-400 focus:outline-none pl-10"
+        />
+        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+    </div>
+
+  <!-- Caja de resultados con posición absoluta -->
+  <div
+    *ngIf="searchQuery && (isLoading || results.length > 0)"
+    class="absolute left-0 top-full mt-2 z-60 w-full bg-white rounded-lg shadow-lg max-h-60 overflow-y-auto"
+    (mouseleave)="searchQuery = ''"
+  >
+    <div *ngIf="isLoading" class="p-2 text-gray-500 text-sm">
+        <div class="inline-block spinner border-t-2 border-gray-500 border-solid rounded-full w-4 h-4 animate-spin mr-2">
+
+        </div>
+        Buscando
+    </div>
+
+    <ul *ngIf="!isLoading && results.length > 0">
+      <li
+        *ngFor="let person of results; trackBy: trackById"
+        class="px-4 py-2 hover:bg-emerald-100 cursor-pointer flex items-center gap-3 m-2 rounded-lg"
+        (click)="onPersonSelected(person)"
+      >
+        <img
+          [src]="person.imageUrl ? person.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'"
+          alt="Foto de {{ person.firstName }}"
+          class="w-8 h-8 rounded-full object-cover"
+        />
+        <span>{{ person.firstName }} {{ person.lastName }}</span>
+      </li>
+    </ul>
+  </div>
+</div>
