@@ -96,7 +96,7 @@ export class PersonComponent {
   backToPerson() {
     this.showEditFamily = false;
     this.personToManage = null;
-    window.location.reload();
+    //window.location.reload();
   }
 
   onClickPerson(person: PersonDetails) {
