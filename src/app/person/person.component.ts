@@ -96,9 +96,12 @@ export class PersonComponent {
   backToPerson() {
     this.showEditFamily = false;
     this.personToManage = null;
-    this.router.navigate([`/person/${this.personDetails?.id}`]).then(() => {
-      window.location.reload();
-    });
+    window.location.reload();
+  }
+
+  onClickPerson(person: PersonDetails) {
+    // Navegar a la página de detalles de la persona seleccionada
+    this.router.navigate([`/person/${person.id}`]);
   }
 
 }

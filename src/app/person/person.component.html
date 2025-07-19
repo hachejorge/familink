@@ -123,7 +123,9 @@
               <img 
                   [src]="spouse.imageUrl ? spouse.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
                   [alt]="'Foto de ' + spouse.firstName"
-                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700"
+                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700 
+                  hover:scale-110 transition-transform duration-300 hover:cursor-pointer hover:contrast-110"
+                  (click)="onClickPerson(spouse)"
                 >
                 <span class="text-md">
                   {{ spouse.firstName }} {{ spouse.lastName }}
@@ -136,7 +138,9 @@
               <img 
                   [src]="father.imageUrl ? father.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
                   [alt]="'Foto de ' + father.firstName"
-                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700 mb-2"
+                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700
+                  hover:scale-110 transition-transform duration-300 hover:cursor-pointer hover:contrast-110"
+                  (click)="onClickPerson(father)"
                 >
                 <span class="text-md">
                   {{ father.firstName }} {{ father.lastName }}
@@ -149,7 +153,9 @@
               <img 
                   [src]="mother.imageUrl ? mother.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
                   [alt]="'Foto de ' + mother.firstName"
-                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700"
+                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700
+                  hover:scale-110 transition-transform duration-300 hover:cursor-pointer hover:contrast-110"
+                  (click)="onClickPerson(mother)"
                 >
                 <span class="text-md">
                   {{ mother.firstName }} {{ mother.lastName }}
@@ -169,7 +175,9 @@
                 <img 
                   [src]="sibling.imageUrl ? sibling.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
                   [alt]="'Foto de ' + sibling.firstName"
-                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700 mb-2"
+                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700 mb-2
+                  hover:scale-110 transition-transform duration-300 hover:cursor-pointer hover:contrast-110"
+                  (click)="onClickPerson(sibling)"
                 >
                 <span class="text-md text-center whitespace-nowrap">
                   {{ sibling.firstName }}
@@ -190,7 +198,9 @@
                 <img 
                   [src]="child.imageUrl ? child.imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" 
                   [alt]="'Foto de ' + child.firstName"
-                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700 mb-2"
+                  class="w-24 h-24 object-cover rounded-full border-4 border-emerald-700 mb-2
+                  hover:scale-110 transition-transform duration-300 hover:cursor-pointer hover:contrast-110"
+                  (click)="onClickPerson(child)"
                 >
                 <span class="text-md text-center whitespace-nowrap">
                   {{ child.firstName }}
