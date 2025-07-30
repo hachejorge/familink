@@ -12,6 +12,7 @@ import { ZoomWrapperComponent } from '../zoom-wrapper/zoom-wrapper.component';
 import { DescendantTreeComponent } from '../descendant-tree/descendant-tree.component';
 import { PersonEditComponent } from '../person-edit/person-edit.component';
 import { PersonDetailsExtendedComponent } from '../person-details-extended/person-details-extended.component';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -34,6 +35,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private treeService: TreeService,
+    private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -73,9 +75,19 @@ export class HomeComponent implements OnInit {
   }
 
   initTree() {
-    const personId = 1;
+
+    const rootPersonId = this.auth.getRootPersonId();
+    if (!rootPersonId) {
+      this.error = 'No se pudo obtener el ID de la persona raíz.';
+      this.loading = false;
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    console.log('Raiz:' + rootPersonId);
+
     this.data2 = null; // Aseguramos que data2 esté vacía al iniciar
-    this.treeService.getAscendantTree(personId).subscribe({
+    this.treeService.getAscendantTree(rootPersonId).subscribe({
       next: (tree) => {
         this.data = tree;
         this.diagramName = `Ascendencia de ${tree.root.firstName} ${tree.root.lastName}`;
@@ -102,9 +114,12 @@ export class HomeComponent implements OnInit {
 
       if (id && (typeStr === 'ascendant' || typeStr === 'descendant')) {
         const treeType = typeStr === 'ascendant' ? TreeType.ASCENDANT : TreeType.DESCENDANT;
+        console.log('Cargando árbol para ID:', id, 'Tipo:', treeType);
+
         this.loadTree({ id, type: treeType });
       } else {
         // si no hay parámetros, cargar el árbol por defecto
+        console.log('Cargando árbol por defecto');
         this.initTree();
       }
     });

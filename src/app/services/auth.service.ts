@@ -30,6 +30,13 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
+  getRootPersonId(): number | null {
+    const token = this.getToken();
+    if (!token) return null;
+    const decoded = this.jwtHelper.decodeToken(token);
+    return decoded?.rootPerson || 1;
+  }
+
   getUserRole(): string | null {
     const token = this.getToken();
     if (!token) return null;
@@ -46,5 +53,10 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.getToken();
+  }
+
+  isAdmin(): boolean {
+    const role = this.getUserRole();
+    return role === 'ADMIN';
   }
 }

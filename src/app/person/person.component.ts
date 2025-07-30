@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Person, PersonDetails } from '../person.model';
 import { PersonService } from '../services/person.service';
 import { PersonDetailsExtendedComponent } from '../person-details-extended/person-details-extended.component';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-person',
@@ -14,11 +15,12 @@ import { PersonDetailsExtendedComponent } from '../person-details-extended/perso
 })
 export class PersonComponent {
 
-  constructor(private router: Router, private route: ActivatedRoute, private personService: PersonService) {}
+  constructor(private router: Router, private route: ActivatedRoute, private personService: PersonService, private authService: AuthService) {}
 
   loading = true;
   error = '';
   showEditFamily = false;
+  isAdmin = false;
 
   personToManage: Person | null = null;
 
@@ -31,6 +33,8 @@ export class PersonComponent {
   siblings: PersonDetails[] = [];
 
   ngOnInit() {
+    this.isAdmin = this.authService.isAdmin();
+
     this.route.paramMap.subscribe(params => {
       const id = Number(params.get('id'));
 

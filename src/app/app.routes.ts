@@ -14,6 +14,7 @@ export const routes: Routes = [
   { path: 'chera/:id', component: CheraFamilyDetailsComponent, canActivate: [AuthGuard] },
   { path: 'home/:id/:type', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'person/:id', component: PersonComponent, canActivate: [AuthGuard] },
-  { path: '', redirectTo: 'home/1/ascendant', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];

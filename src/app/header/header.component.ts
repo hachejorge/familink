@@ -30,7 +30,6 @@ export class HeaderComponent {
       this.selectedNav = '';
     }
     this.username = this.auth.getUserName() ?? '';
-    console.log("Usuario = " + this.username)
   }
 
   goToHome() {

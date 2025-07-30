@@ -25,6 +25,7 @@
             class="w-36 h-36 object-cover rounded-full border-4 border-green-50 absolute -bottom-10 left-10 z-10 bg-white"
           />
           <div
+            *ngIf="isAdmin"
             class="absolute -bottom-10 left-10 w-36 h-36 rounded-full z-20 flex items-center justify-center
               group-hover:bg-black/60 bg-opacity-0 transition-all duration-300 cursor-pointer"
             (click)="onEditFamily()"
