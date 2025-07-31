@@ -58,7 +58,11 @@ export class PersonNewComponent {
         this.showPopUp = true;
       },
       error: (error: any) => {
-        this.popUpMessage = `Error creando a ${this.person.firstName}`;
+        if(error.error.error == 'Referencia debe tener madre o padre para crear un hermano/a') {
+          this.popUpMessage = 'Debes crear primero a la madre o padre de este hermano/a';
+        } else {
+          this.popUpMessage = `Error creando a ${this.person.firstName}`;
+        }
         this.personUploading = false;
         this.showPopUp = true;
       }
