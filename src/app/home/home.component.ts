@@ -141,6 +141,7 @@ export class HomeComponent implements OnInit {
         error: (err) => {
           this.error = 'Error al cargar la ascendencia.';
           this.loading = false;
+          this.router.navigate(['/login']);
         }
       });
     } else if (event.type === TreeType.DESCENDANT) {
@@ -154,6 +155,7 @@ export class HomeComponent implements OnInit {
         error: (err) => {
           this.error = 'Error al cargar la descendencia.';
           this.loading = false;
+          this.router.navigate(['/login']);
         }
       });
     }

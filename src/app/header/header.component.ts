@@ -54,5 +54,6 @@ export class HeaderComponent {
   logOut() {
     this.auth.logout();
     // Quiero redirigir al login
+    this.router.navigate(['/login']);
   }
 }
