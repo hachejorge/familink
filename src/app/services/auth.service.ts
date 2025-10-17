@@ -51,6 +51,13 @@ export class AuthService {
     return decoded?.username || null;
   }
 
+  getFamilyId(): number | null {
+    const token = this.getToken();
+    if (!token) return null;
+    const decoded = this.jwtHelper.decodeToken(token);
+    return decoded?.familyId || null;
+  }
+
   isAuthenticated(): boolean {
     return !!this.getToken();
   }

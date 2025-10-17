@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { BirthService } from '../services/birth.service'
 import { PersonDetails } from '../person.model';
 import { trigger, transition, style, animate, state } from '@angular/animations';
+import { PersonService } from '../services/person.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-birth-calendar',
@@ -30,7 +32,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
   ]
 })
 export class BirthCalendarComponent {
-  constructor(private birthService : BirthService) {}
+  constructor(private birthService : BirthService, private authService: AuthService) {}
 
   error = '';
   loading = true;
@@ -46,7 +48,9 @@ export class BirthCalendarComponent {
   }
 
   ngOnInit() {
-    this.birthService.getBirhtDates().subscribe({
+    const familyId = this.authService.getFamilyId();
+
+    this.birthService.getBirthDates(familyId).subscribe({
       next: (births) => {
         this.birthData = births;
         this.loading = false;

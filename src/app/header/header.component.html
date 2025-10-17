@@ -25,6 +25,7 @@
         </div>
 
         <div 
+          *ngIf="showCheraButton"
           class="flex items-center group hover:cursor-pointer space-x-2 shadow-2xl px-4 py-2 rounded-2xl hover:scale-105"
           [ngClass]="{
         'bg-emerald-600 text-white': selectedNav === 'chera',
@@ -43,7 +44,7 @@
 
       <div class="flex space-x-4 items-center text-emerald-700"
         (click)="showOptionsPanel = true">
-        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture" class="h-14 rounded-full border-2 border-emerald-700">
+        <img [src]="profileImage" alt="Profile Picture" class="h-14 rounded-full border-2 border-emerald-700">
         <span class="font-semibold">{{ username }}</span>
       </div>
 

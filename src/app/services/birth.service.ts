@@ -9,8 +9,8 @@ export class BirthService {
 
   readonly apiURL = "https://familink-back.onrender.com/";
 
-  getBirhtDates() {
-    let birthdates = this.http.get<PersonDetails[]>(`${this.apiURL}persons/birthdates`);
+  getBirthDates(familyId: number | null) {
+    let birthdates = this.http.get<PersonDetails[]>(`${this.apiURL}persons/birthdates?familyId=${familyId}`);
     console.log(birthdates)
     return birthdates;
   }

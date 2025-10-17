@@ -9,10 +9,11 @@ export class SearchService {
 
   constructor(private http: HttpClient) {}
 
-  getPeopleByString(string: string): Observable<Person[]> {
-    if (!string || string.trim() === '') {
-      return of([]); // <--- Observable vacío, no un array directo
+  getPeopleByString(string: string, familyId: number | null): Observable<Person[]> {
+    if (!string || string.trim() === '' || familyId === null) {
+      return of([]);
     }
-    return this.http.get<Person[]>(`${this.apiURL}search/${string}`);
+    return this.http.get<Person[]>(`${this.apiURL}search/${string}?familyId=${familyId}`);
   }
+
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SearchService } from '../services/search.service';
+import { AuthService } from '../services/auth.service';
 import { Person } from '../person.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +18,7 @@ export class SearcherComponent {
   results: Person[] = [];
   isLoading = false;
 
-  constructor(private searchService: SearchService, private router: Router) {}
+  constructor(private searchService: SearchService, private router: Router, private auth: AuthService) {}
 
   onSearchChange() {
     const query = this.searchQuery.trim();
@@ -28,7 +29,9 @@ export class SearcherComponent {
 
     this.isLoading = true;
 
-    this.searchService.getPeopleByString(query).subscribe({
+    const familyId = this.auth.getFamilyId();
+
+    this.searchService.getPeopleByString(query, familyId).subscribe({
       next: (people: Person[]) => {
         this.results = people;
         console.log("Resultados de búsqueda:", this.results);
